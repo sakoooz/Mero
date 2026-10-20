@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#080d20">
+<link rel="icon" href="assets/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<title>性格の種 | PERSONALITY SLOT</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <a class="brand" href="#home"><span class="brand-mark">✦</span><span><b>PERSONALITY<br>SLOT</b><small>性格の種</small></span></a>
+    <p class="tagline">まだ知らないキャラクターに出会う。</p>
+    <nav>
+      <button class="nav-item active" data-view="slotView"><span>⤨</span><span><b>性格スロット</b><small>ランダムに性格を生成</small></span></button>
+      <button class="nav-item" data-view="libraryView"><span>▤</span><span><b>性格タイプ図鑑</b><small>登録・編集・検索</small></span></button>
+      <button class="nav-item" data-view="editorView"><span>＋</span><span><b>新しいタイプを追加</b><small>自分だけの性格を作る</small></span></button>
+      <button class="nav-item" data-view="savedView"><span>♡</span><span><b>マイリスト</b><small>気に入った組み合わせ</small></span></button>
+      <button class="nav-item" data-view="settingsView"><span>⚙</span><span><b>設定・データ管理</b><small>インポート / エクスポート</small></span></button>
+    </nav>
+    <div class="side-note"><span class="neon-star">✦</span><b>MAKE A CHARACTER</b><p>偶然の組み合わせから、まだ知らない人物像を。</p></div>
+    <div class="sidebar-foot">PERSONALITY LAB · v1.0</div>
+  </aside>
+
+  <main>
+    <header class="hero" id="home">
+      <div class="hero-copy">
+        <p class="eyebrow">CHARACTER PERSONALITY LAB</p>
+        <h1>性格の組み合わせから、<br>まだ見ぬキャラクターを生み出そう。</h1>
+        <p class="hero-desc">ランダムな出会いが、創作のきっかけになる。</p>
+        <div class="hero-pills"><span># ランダムスロット</span><span># 自分で追加できる</span><span># 創作キャラ設計</span></div>
+      </div>
+      <div class="hero-art" aria-hidden="true"><div class="neon-sign">CREATE<br><i>YOUR</i><br>STORY</div><div class="art-books"></div></div>
+    </header>
+
+    <section class="view active" id="slotView">
+      <div class="section-head slot-head">
+        <div><p class="eyebrow">01 / RANDOMIZER</p><h2><span class="neon-icon">⤨</span> 性格スロット</h2><p class="muted">各ジャンルから性格タイプを選びます。固定したスロットはそのまま残ります。</p></div>
+        <div class="head-actions"><button class="btn primary" id="spinAll">✦ 全スロットを回す</button><button class="btn" id="saveCombo">♡ 結果を保存</button><button class="btn ghost" id="resetSlots">リセット</button></div>
+      </div>
+      <div class="slots" id="slots"></div>
+      <div class="slot-bottom"><span class="muted" id="slotStatus">図鑑に登録されたタイプが抽選候補になります。</span><button class="btn cyan" id="registerCombo">組み合わせから性格案を作る ↗</button></div>
+      <div class="combo-panel" id="comboPanel"><div class="combo-title"><span class="neon-icon">✧</span><h3>今回の組み合わせ</h3><span class="muted">気になる矛盾も、そのまま個性に。</span></div><div id="comboSummary" class="combo-summary"></div></div>
+    </section>
+
+    <section class="view" id="libraryView">
+      <div class="section-head"><div><p class="eyebrow">02 / PERSONALITY INDEX</p><h2><span class="neon-icon">▤</span> 性格タイプ図鑑</h2><p class="muted">スロットで選ばれる性格タイプの一覧。自由に追加・編集できます。</p></div><button class="btn primary" id="addTypeTop">＋ 新しいタイプを追加</button></div>
+      <div class="filters">
+        <label class="search">⌕ <input id="searchTypes" type="search" placeholder="名前・説明・タグで検索…"></label>
+        <select id="filterCategory"><option value="all">すべてのジャンル</option></select>
+        <select id="sortTypes"><option value="recent">最近追加した順</option><option value="name">名前順</option></select>
+      </div>
+      <div class="category-chips" id="categoryChips"></div>
+      <div class="type-grid" id="typeGrid"></div>
+    </section>
+
+    <section class="view" id="editorView">
+      <div class="section-head"><div><p class="eyebrow">03 / CREATE YOUR TYPE</p><h2><span class="neon-icon">＋</span> 性格タイプを追加</h2><p class="muted">性格の原型も、あなた独自の複雑な人物像も登録できます。</p></div></div>
+      <form id="typeForm" class="editor-card">
+        <input type="hidden" id="typeId">
+        <div class="form-grid">
+          <label>タイプ名 *<input id="typeName" required maxlength="80" placeholder="例：理屈っぽいロマンチスト"></label>
+          <label>ジャンル *<select id="typeCategory" required></select></label>
+        </div>
+        <label>ひとことで言うと *<textarea id="typeDesc" required rows="3" placeholder="どんな性格の人なのか、全体像を説明"></textarea></label>
+        <div class="form-grid">
+          <label>大切にすること<textarea id="typeValues" rows="3" placeholder="価値観・欲求・行動原理"></textarea></label>
+          <label>人間関係での傾向<textarea id="typeSocial" rows="3" placeholder="他人との距離感や接し方"></textarea></label>
+          <label>恋愛での傾向<textarea id="typeLove" rows="3" placeholder="恋愛観・愛情表現・親密さ"></textarea></label>
+          <label>欠点・こじれ方<textarea id="typeShadow" rows="3" placeholder="長所の裏返し、弱点、矛盾など"></textarea></label>
+        </div>
+        <label>タグ（カンマ・「、」区切り）<input id="typeTags" placeholder="例：野心、プライド、努力家"></label>
+        <div class="form-actions"><button class="btn" type="button" id="clearForm">クリア</button><button class="btn primary" type="submit">タイプを保存して図鑑に追加</button></div>
+        <p class="muted tiny">保存したタイプは同じジャンルのスロット抽選候補に自動で追加されます。</p>
+      </form>
+    </section>
+
+    <section class="view" id="savedView">
+      <div class="section-head"><div><p class="eyebrow">04 / MY COLLECTION</p><h2><span class="neon-icon">♡</span> マイリスト</h2><p class="muted">保存した性格の組み合わせを見返せます。</p></div></div>
+      <div id="savedGrid" class="saved-grid"></div>
+    </section>
+
+    <section class="view" id="settingsView">
+      <div class="section-head"><div><p class="eyebrow">05 / DATA & SETTINGS</p><h2><span class="neon-icon">⚙</span> 設定・データ管理</h2><p class="muted">図鑑・マイリストのバックアップを管理します。</p></div></div>
+      <div class="settings-grid">
+        <article class="setting-card"><h3>JSONバックアップ</h3><p>自作タイプと保存した組み合わせをまとめて書き出します。</p><button class="btn primary" id="exportData">⇩ JSONを書き出す</button></article>
+        <article class="setting-card"><h3>JSONを読み込む</h3><p>バックアップを読み込んでタイプやマイリストを追加・更新します。</p><button class="btn" id="importData">⇧ JSONを読み込む</button><input type="file" id="importFile" accept=".json,application/json" hidden></article>
+        <article class="setting-card danger-card"><h3>初期化</h3><p>追加したタイプとマイリストを削除して、初期状態に戻します。</p><button class="btn danger" id="resetAll">すべてのデータを初期化</button></article>
+      </div>
+      <p class="muted tiny">データはこのブラウザ内に保存されます。ブラウザのデータ消去や別端末への移行に備えて、定期的にJSONを保存してください。</p>
+    </section>
+    <footer>PERSONALITY SLOT · FIND A NEW SIDE OF YOUR CHARACTER</footer>
+  </main>
+</div>
+
+<div class="modal" id="detailModal"><div class="modal-card"><div class="modal-head"><div><p class="eyebrow">PERSONALITY FILE</p><h2 id="detailTitle"></h2><span class="category-label" id="detailCategory"></span></div><button class="icon-btn" data-close="detailModal">×</button></div><div id="detailBody"></div><div class="modal-actions"><button class="btn" id="detailEdit">編集</button><button class="btn primary" data-close="detailModal">閉じる</button></div></div></div>
+<div class="toast" id="toast"></div>
+<script src="app.js"></script>
+</body></html>
